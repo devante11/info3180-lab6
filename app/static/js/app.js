@@ -66,7 +66,7 @@ const NewList = {
     fetch('https://newsapi.org/v2/top-headlines?country=us',
     {
     headers: {
-      'Authorization': 'Bearer <f2560767f0194c6a8166df2b00deb2aa>'
+      'Authorization': 'Bearer <>'
     }
 
     })
@@ -89,7 +89,7 @@ const NewList = {
 
         fetch('https://newsapi.org/v2/everything?q='+ self.searchTerm + '&language=en', {
   headers: {
-        'Authorization': 'Bearer <f2560767f0194c6a8166df2b00deb2aa>'
+        'Authorization': 'Bearer <>'
   } 
 
 })

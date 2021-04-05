@@ -1,46 +1,22 @@
 /* Add your Application JavaScript */
-const app = Vue.createApp({
-  components: {
-      'home': Home, 
-      'news-list': NewsList
-},
-  data() {
-    return {
-      welcome: 'Hello World! Welcome to VueJS'
-    }
-  }
-});
-
-app.component('app-header', {
-  name: 'AppHeader',
+const Home = {
+  name: 'Home' , 
   template: `
-      <header>
-          <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
-            <a class="navbar-brand" href="#">VueJS App</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                  <router-link to="/" class="nav-link">Home</router-link>
-                <li class="nav-item">
-                  <a class="nav-link" href="#">News</a>
-                </li>
-              </ul>
-            </div>
-          </nav>
-      </header>    
-  `,
-  data: function() {
-    return {};
+      <div class="home">
+        <img src="/static/images/logo.png" alt="VueJS Logo">  
+        <h1>{{ welcome }}</h1>
+      </div> 
+      `,
+      data() {
+        return {
+           welcome: 'Hello World! Welcome to VueJS'
+      } 
   }
-});
-  
+};
 
-const NewList = {
-  name: 'NewsList',
+
+const NewsList = {
+  name: 'news_list',
   template: `
 
       <div class="news">
@@ -52,13 +28,21 @@ const NewList = {
               <button class="btn btn-primary mb-2" @click="searchNews">Search</button>
          </div>
       </div>
-
-      <ul class="news__list">
-          <li class="news__item">News item 1</li>
-          <li v-for="article in articles" class="news__item">{{ article.title }}</li> 
-          <li class="news__item">News item 2</li> 
-          <li class="news__item">News item 3</li>
-      </ul> 
+       <div class="row">
+      <div v-for="article in articles" class="pt-3 col-sm-4">
+        <div class="card pt-2 border leftFix bottomSpace">
+          <div class="card-head pl-4">
+            <h5 class="card-title">{{ article.title }}</h5>
+          </div>
+        <div class="card-body">
+        <img class="card-img-top" :src= article.urlToImage />
+        </div>
+        <div class="card-footer noBorder">
+          <small>{{ article.description }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
     </div>
   `,
   created(){
@@ -66,7 +50,7 @@ const NewList = {
     fetch('https://newsapi.org/v2/top-headlines?country=us',
     {
     headers: {
-      'Authorization': 'Bearer <>'
+      'Authorization': 'Bearer <f2560767f0194c6a8166df2b00deb2aa>'
     }
 
     })
@@ -80,8 +64,15 @@ const NewList = {
   },
   data(){
     return{
-      articles: []
-    }
+      articles: [],
+    };
+  },
+    data: function () {
+    return {
+      articles: [],
+      searchTerm: "",
+    };
+
   },
   methods: {
       searchNews() {
@@ -89,7 +80,7 @@ const NewList = {
 
         fetch('https://newsapi.org/v2/everything?q='+ self.searchTerm + '&language=en', {
   headers: {
-        'Authorization': 'Bearer <>'
+        'Authorization': 'Bearer <f2560767f0194c6a8166df2b00deb2aa>'
   } 
 
 })
@@ -110,26 +101,58 @@ const NewList = {
 };
 
 
-const Home = Vue.component('Home',{
-  template: `
-      <div class="home">
-        <img src="/static/images/logo.png" alt="VueJS Logo">  
-        <h1>{{ welcome }}</h1>
-      </div> 
-      `,
-      data() {
-        return {
-           welcome: 'Hello World! Welcome to VueJS'
-      } 
+
+
+const app = Vue.createApp({
+  data() {
+    return {
+      welcome: 'Hello World! Welcome to VueJS'
+    }
+  },
+  components: {
+      'home': Home, 
+      'news-list': NewsList
   }
 });
+
+app.component('app-header', {
+  name: 'AppHeader',
+  template: `
+      <header>
+          <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+            <a class="navbar-brand" href="#">VueJS App</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                  <router-link to="/" class="nav-link">Home</router-link></li>
+                <li class="nav-item">
+                  <a class="nav-link" href="#">News</a>
+                </li>
+              </ul>
+            </div>
+          </nav>
+      </header>    
+  `,
+  data: function() {
+    return {};
+  }
+});
+  
+
+
+
 
 
 
 const router = VueRouter.createRouter({ 
-  history: VueRouter.createWebHistory(), routes: [
+  history: VueRouter.createWebHistory(), 
+  routes: [
       { path: '/', component: Home },
-      { path: '/news', component: NewsList }
+      { path: '/News', component: NewsList }
   ]
 });
 
